@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+
+  api:
+    build: ./api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ocr-engine
+      - db
+    environment:
+      - OCR_ENGINE_URL=http://ocr-engine:6000
+      - DB_HOST=db
+      - DB_PORT=27017
+
+  ocr-engine:
+    build: ./ocr-engine
+    ports:
+      - "6000:6000"
+
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
