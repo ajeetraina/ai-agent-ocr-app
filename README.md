@@ -52,17 +52,29 @@ git clone https://github.com/ajeetraina/ai-agent-ocr-app.git
 cd ai-agent-ocr-app
 ```
 
-2. Build the Docker container
-```bash
-docker build -t ocr-app .
+2. Build and run the service containers
+
+```
+docker compose up -d --build
 ```
 
-3. Run the container
-```bash
-docker run -p 3000:3000 ocr-app
-```
 
 4. Access the application at http://localhost:3000
+
+5. Try uploading a document through the API directly
+
+```
+curl -X POST http://localhost:5000/api/ocr \
+  -F "file=@/Users/ajeetsraina/keyframing-01.jpg" \
+  -F "detectTables=true" \
+  -F "detectDiagrams=true"
+```
+
+### Result:
+
+```
+{"documentId":"18ef6f23-47fd-46c6-b74e-87be27cbe717","success":true}
+```
 
 ## Development Process
 
