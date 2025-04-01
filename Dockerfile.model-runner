@@ -1,0 +1,30 @@
+# Dockerfile for Docker Model Runner integration
+
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    libtesseract-dev \
+    libpng-dev \
+    libjpeg-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copy only the necessary files for the OCR engine
+COPY ocr-engine /app/ocr-engine
+COPY model-runner-api.py /app/model-runner-api.py
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /app/ocr-engine/requirements.txt
+
+# Create required directories
+RUN mkdir -p /app/uploads /app/processed
+
+# Expose API port
+EXPOSE 5000
+
+# Default command
+CMD ["python", "/app/model-runner-api.py"]

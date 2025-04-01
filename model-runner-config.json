@@ -1,0 +1,109 @@
+{
+  "name": "ocr-app",
+  "version": "1.0.0",
+  "description": "OCR application with Mermaid.js diagram detection built using Docker Model Runner",
+  "author": "AI Agents",
+  "license": "MIT",
+  "engine": {
+    "type": "docker",
+    "image": "ocr-app:latest",
+    "container_name": "ocr-app-runner"
+  },
+  "api": {
+    "compatible": ["docker"],
+    "endpoint": "/api/ocr",
+    "port": 5000
+  },
+  "commands": {
+    "process": {
+      "description": "Process an image or document with OCR",
+      "args": [
+        {
+          "name": "file",
+          "type": "file",
+          "description": "The image or document to process"
+        },
+        {
+          "name": "detectTables",
+          "type": "boolean",
+          "default": true,
+          "description": "Enable table detection"
+        },
+        {
+          "name": "detectHandwriting",
+          "type": "boolean",
+          "default": true,
+          "description": "Enable handwriting recognition"
+        },
+        {
+          "name": "detectDiagrams",
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diagram detection and Mermaid.js conversion"
+        },
+        {
+          "name": "multiLanguage",
+          "type": "boolean",
+          "default": false,
+          "description": "Enable multi-language support"
+        }
+      ],
+      "output": {
+        "type": "json",
+        "schema": {
+          "text": "string",
+          "documentId": "string",
+          "confidence": "number"
+        }
+      }
+    },
+    "list": {
+      "description": "List all processed documents",
+      "args": [],
+      "output": {
+        "type": "json",
+        "schema": {
+          "documents": "array"
+        }
+      }
+    },
+    "get": {
+      "description": "Get a specific document by ID",
+      "args": [
+        {
+          "name": "id",
+          "type": "string",
+          "description": "Document ID"
+        }
+      ],
+      "output": {
+        "type": "json",
+        "schema": {
+          "id": "string",
+          "text": "string",
+          "filename": "string",
+          "createdAt": "string",
+          "tables": "array",
+          "diagrams": "array"
+        }
+      }
+    }
+  },
+  "resources": {
+    "cpu": "1",
+    "memory": "2G",
+    "gpu": false
+  },
+  "dependencies": {
+    "python": "3.9",
+    "packages": [
+      "flask",
+      "flask-cors",
+      "pymongo",
+      "pytesseract",
+      "pillow",
+      "numpy",
+      "opencv-python-headless"
+    ]
+  }
+}
