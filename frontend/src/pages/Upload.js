@@ -20,7 +20,8 @@ const Upload = () => {
     detectTables: true,
     detectHandwriting: true,
     multiLanguage: false,
-    preserveFormatting: true
+    preserveFormatting: true,
+    detectDiagrams: true  // Added for Mermaid.js support
   });
   const navigate = useNavigate();
 
@@ -183,6 +184,18 @@ const Upload = () => {
                   />
                 }
                 label="Preserve Formatting"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={options.detectDiagrams}
+                    onChange={handleOptionChange}
+                    name="detectDiagrams"
+                  />
+                }
+                label="Detect Diagrams"
               />
             </Grid>
           </Grid>

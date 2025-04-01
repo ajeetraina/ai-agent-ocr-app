@@ -22,6 +22,7 @@ const Settings = () => {
     enableHandwriting: true,
     enableTableDetection: true,
     preserveFormatting: true,
+    enableDiagramDetection: true, // Added for Mermaid.js
     maxFileSize: 10,
     defaultExportFormat: 'PDF'
   });
@@ -149,6 +150,19 @@ const Settings = () => {
                   />
                 }
                 label="Preserve Document Formatting"
+              />
+            </Box>
+
+            <Box sx={{ mt: 1 }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={settings.enableDiagramDetection}
+                    onChange={handleChange}
+                    name="enableDiagramDetection"
+                  />
+                }
+                label="Enable Diagram Detection"
               />
             </Box>
 

@@ -11,7 +11,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DownloadIcon from '@mui/icons-material/Download';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import SchemaIcon from '@mui/icons-material/Schema';
 import axios from 'axios';
+
+// Import MermaidDiagram component
+import MermaidDiagram from '../components/MermaidDiagram';
 
 const DocumentView = () => {
   const { id } = useParams();
@@ -98,6 +102,9 @@ const DocumentView = () => {
     );
   }
 
+  // Determine if we should show the Diagrams tab
+  const hasDiagrams = document?.hasDiagram || (document?.diagrams && document.diagrams.length > 0);
+  
   return (
     <Container maxWidth="lg">
       <Box sx={{ my: 4 }}>
@@ -140,6 +147,7 @@ const DocumentView = () => {
           <Tab label="Text" />
           <Tab label="Original" />
           {document?.hasTable && <Tab label="Tables" />}
+          {hasDiagrams && <Tab label="Diagrams" icon={<SchemaIcon />} iconPosition="start" />}
         </Tabs>
 
         {activeTab === 0 && (
@@ -175,6 +183,23 @@ const DocumentView = () => {
               ))
             ) : (
               <Typography>No tables detected</Typography>
+            )}
+          </Paper>
+        )}
+
+        {activeTab === 3 && hasDiagrams && (
+          <Paper sx={{ p: 3 }}>
+            {document?.diagrams && document.diagrams.length > 0 ? (
+              document.diagrams.map((diagram, index) => (
+                <Box key={index} sx={{ mb: 4 }}>
+                  <MermaidDiagram 
+                    code={diagram.mermaidCode} 
+                    title={`${diagram.type} Diagram ${index + 1}`} 
+                  />
+                </Box>
+              ))
+            ) : (
+              <Typography>No diagrams detected</Typography>
             )}
           </Paper>
         )}
